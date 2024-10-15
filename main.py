@@ -1,6 +1,9 @@
+from common.menu import Menu
+
 
 def main():
-    pass
+    menu = Menu()
+    menu.run_loop()
 
 
 if __name__ == "__main__":
