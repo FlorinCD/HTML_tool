@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, Canvas
+from .html_object import HtmlFile
 
 
 class Menu:
@@ -58,14 +59,19 @@ class Menu:
                                                command=self.on_check,  font=("Arial", 11), bg='lightblue')
         self.convert_checkbox.place(x=340, y=120)
 
-    # Method to open file dialog and get the file
+    # Method to open file dialog and get the file and format the html file
     def open_file(self, file_label: tk.Label) -> None:
         file_path = filedialog.askopenfilename(title="Select a file")
         if file_path:
-            messagebox.showinfo("Popup", "The file has been added to the tool!")
+
+            translate_to_rel = True if self.convert_checkbox_var.get() == 1 else False
+            currentHtmlFile = HtmlFile(file_path, translate_to_rel)
+            currentHtmlFile.modify_local_references()
+
+            messagebox.showinfo("Popup", "The tool has formatted the given file!")
 
     # Method to check the state of the checkbox
-    def on_check(self):
+    def on_check(self) -> None:
         if self.convert_checkbox_var.get() == 1:
             messagebox.showinfo("Popup", "Checkbox is checked!")
         else:
