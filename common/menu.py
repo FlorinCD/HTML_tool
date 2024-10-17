@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, Canvas
-from .html_object import HtmlFile
+from .files import HtmlFile
 
 
 class Menu:
