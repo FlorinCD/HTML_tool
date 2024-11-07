@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, Canvas
-from .files import HtmlFile
+from .files import HtmlFile, LogFile
 
 
 class Menu:
@@ -14,6 +14,10 @@ class Menu:
         self.convert_label = None
         self.convert_checkbox = None
         self.convert_checkbox_var = None
+
+        self.write_to_logger_label = None
+        self.write_to_logger_checkbox = None
+        self.write_to_logger_checkbox_var = None
         self.frame = None
         self.bg_img_reference = None
 
@@ -53,11 +57,22 @@ class Menu:
 
         # Variable to hold checkbox state (0 for unchecked, 1 for checked)
         self.convert_checkbox_var = tk.IntVar()
+        self.write_to_logger_checkbox_var = tk.IntVar()
 
         # Creating the checkbox
         self.convert_checkbox = tk.Checkbutton(self.frame, text="Check", variable=self.convert_checkbox_var,
-                                               command=self.on_check,  font=("Arial", 11), bg='lightblue')
+                                               command=self.on_check_abs_to_rel,  font=("Arial", 11), bg='lightblue')
         self.convert_checkbox.place(x=340, y=120)
+
+        # Creating the label for writing to logger
+        self.write_to_logger_label = tk.Label(self.frame, text="Write to logger", anchor="w",
+                                      bg='lightblue', font=("Arial", 11))
+        self.write_to_logger_label.place(x=100, y=180)
+
+        # Creating the checkbox for writing to logger
+        self.write_to_logger_checkbox = tk.Checkbutton(self.frame, text="Check", variable=self.write_to_logger_checkbox_var,
+                                               command=self.on_check_logger,  font=("Arial", 11), bg='lightblue')
+        self.write_to_logger_checkbox.place(x=340, y=180)
 
     # Method to open file dialog and get the file and format the html file
     def open_file(self, file_label: tk.Label) -> None:
@@ -70,9 +85,20 @@ class Menu:
 
             messagebox.showinfo("Popup", "The tool has formatted the given file!")
 
-    # Method to check the state of the checkbox
-    def on_check(self) -> None:
+            write_to_log = True if self.convert_checkbox_var.get() == 1 else False
+            currentLoggerFile = LogFile(file_path, write_to_log)
+            # write the function to write to log TODO
+
+    # Method to check the state of the checkbox for relative paths
+    def on_check_abs_to_rel(self) -> None:
         if self.convert_checkbox_var.get() == 1:
-            messagebox.showinfo("Popup", "Checkbox is checked!")
+            messagebox.showinfo("Popup", "The paths will be set to relative!")
         else:
-            messagebox.showinfo("Popup", "Checkbox is unchecked!")
+            messagebox.showinfo("Popup", "The paths will remain unchanged!")
+
+    # Method to check the state of the checkbox for logger
+    def on_check_logger(self) -> None:
+        if self.write_to_logger_checkbox_var.get() == 1:
+            messagebox.showinfo("Popup", "The logger will be written!")
+        else:
+            messagebox.showinfo("Popup", "The logger won't be written!")

@@ -2,7 +2,7 @@ import os
 import logging
 from .path import Path
 from bs4 import BeautifulSoup
-from .errors import HTMLFormattingError
+from .errors import HTMLFormattingError, LogFileExistsError
 
 
 class File:
@@ -12,9 +12,6 @@ class File:
         self.file_path = Path(file_path)
 
     def read_file(self) -> str:
-        pass
-
-    def modify_local_references(self):
         pass
 
     def file_name(self) -> str:
@@ -65,6 +62,25 @@ class HtmlFile(File):
     @property
     def file_name(self) -> str:
         return self.file_path.path.split('\\')[-1]
+
+
+class LogFile(File):
+
+    def __init__(self, file_path: str):
+        super().__init__(file_path)
+
+    def read_file(self) -> str:
+        """Reads the content of the html file"""
+        if os.path.exists(self.file_path.path):
+            with open(self.file_path.path, 'r', encoding='utf-8') as f:
+                return f.read()
+        else:
+            raise LogFileExistsError(f"File {self.file_path} not found.")
+
+    def file_name(self) -> str:
+        return self.file_path.path.split('\\')[-1]
+
+
 
 
 

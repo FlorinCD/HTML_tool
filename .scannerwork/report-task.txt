@@ -1,0 +1,6 @@
+projectKey=HTML_tool
+serverUrl=http://localhost:9000
+serverVersion=10.7.0.96327
+dashboardUrl=http://localhost:9000/dashboard?id=HTML_tool
+ceTaskId=2b24521e-dbe9-4b77-9c6c-606d6a1e7d7e
+ceTaskUrl=http://localhost:9000/api/ce/task?id=2b24521e-dbe9-4b77-9c6c-606d6a1e7d7e
