@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, Canvas
-from .files import HtmlFile, LogFile
+from .files import HtmlFile
 
 
 class Menu:
@@ -65,7 +65,7 @@ class Menu:
         self.convert_checkbox.place(x=340, y=120)
 
         # Creating the label for writing to logger
-        self.write_to_logger_label = tk.Label(self.frame, text="Write to logger", anchor="w",
+        self.write_to_logger_label = tk.Label(self.frame, text="Write to logger all hrefs", anchor="w",
                                       bg='lightblue', font=("Arial", 11))
         self.write_to_logger_label.place(x=100, y=180)
 
@@ -80,14 +80,17 @@ class Menu:
         if file_path:
 
             translate_to_rel = True if self.convert_checkbox_var.get() == 1 else False
-            currentHtmlFile = HtmlFile(file_path, translate_to_rel)
-            currentHtmlFile.modify_local_references()
+            write_to_log = True if self.write_to_logger_checkbox_var.get() == 1 else False
 
-            messagebox.showinfo("Popup", "The tool has formatted the given file!")
+            HtmlFile(file_path, translate_to_rel, write_to_log)
 
-            write_to_log = True if self.convert_checkbox_var.get() == 1 else False
-            currentLoggerFile = LogFile(file_path, write_to_log)
-            # write the function to write to log TODO
+            # translate local references from absolute to relative path
+            if translate_to_rel:
+                messagebox.showinfo("Popup", "The tool will format the local references to relative!")
+
+            # write the output to the logger
+            if write_to_log:
+                messagebox.showinfo("Popup", "The tool will write to the logger all the information!")
 
     # Method to check the state of the checkbox for relative paths
     def on_check_abs_to_rel(self) -> None:

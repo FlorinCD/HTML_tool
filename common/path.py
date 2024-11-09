@@ -33,6 +33,11 @@ class Path:
         """Checks if the path is a directory"""
         return os.path.isdir(self.path)
 
+    @property
+    def absolute_path(self) -> str:
+        """Returns the absolute path of a file"""
+        return os.path.abspath(self.path)
+
     @classmethod
     def is_local_reference(cls, url) -> bool:
         # Check if the URL is local (i.e., does not start with http:// or https://)
