@@ -24,22 +24,25 @@ class HtmlFile(File):
 
     HTML_FILES_ITERATED = set()
 
-    def __init__(self, file_path: str, translate_to_rel: bool = False, write_to_log: bool = False):
+    def __init__(self, file_path: str, translate_to_rel: bool = False, write_to_log: bool = False, write_to_log_script: bool = False):
         super().__init__(file_path)
 
         self.references = []
         self.translate_to_rel = translate_to_rel
         self.write_to_log = write_to_log
+        self.write_to_log_script = write_to_log_script
 
         HtmlFile.HTML_FILES_ITERATED.add(self.file_path.path)
 
         if self.translate_to_rel:
             self.modify_local_references()
         if self.write_to_log:
-            logger = Logger(LOGGER_FILE_PATH, self.file_path.path, self.map_all_references())
+            logger = LoggerHTML(LOGGER_FILE_PATH, self.file_path.path, self.map_all_references())
             logger.output_to_logger_file()
-            #currentLoggerFile = LogFile(LOGGER_FILE_PATH)
-            #currentLoggerFile.write_to_file(self.map_all_references(), self.file_path.path)
+
+        if self.write_to_log_script:
+            logger_scripts = LoggerScripts(LOGGER_FILE_PATH, self.file_path.path, self.map_all_scripts())
+            logger_scripts.output_to_logger_file()
 
     def read_file(self) -> str:
         """Reads the content of the html file"""
@@ -74,8 +77,7 @@ class HtmlFile(File):
                 file.write(str(soup))
 
         except Exception as e:
-            logging.error(f"Received: {e}")
-            raise HTMLFormattingError
+            logging.error(f"Received: {e}", HTMLFormattingError)
 
     @property
     def file_name(self) -> str:
@@ -88,6 +90,20 @@ class HtmlFile(File):
             "url": ref_value,
             "is_absolute": is_absolute
         })
+
+    # Get match for scripts and write them to logger
+    def map_all_scripts(self) -> str:
+        html_content = self.read_file()
+        if not html_content:
+            return ""
+        if self.write_to_log_script:
+            script_tags = re.findall(r'<script[^>]*(type="([^"]+)"|src="([^"]+)")[^>]*>.*?</script>', html_content, re.DOTALL | re.IGNORECASE)
+
+            output_content = ""
+            for script_type in script_tags:
+                output_content += f"\t\t{script_type}\n"
+            return output_content
+        return ""
 
     # Iterate over the content and get all the references from the file
     def map_all_references(self) -> list[dict[str, any]]:
@@ -138,7 +154,7 @@ class HtmlFile(File):
 
                 if ref_type == "Internal Link" and is_html and reference_html_path not in HtmlFile.HTML_FILES_ITERATED:
                     HtmlFile.HTML_FILES_ITERATED.add(reference_html_path)
-                    HtmlFile(reference_html_path, self.translate_to_rel, self.write_to_log)
+                    HtmlFile(reference_html_path, self.translate_to_rel, self.write_to_log, self.write_to_log_script)
 
         return self.references
 
@@ -168,7 +184,7 @@ class LogFile(File):
     def file_name(self) -> str:
         return self.file_path.path.split('\\')[-1]
 
-    def write_to_file(self, content: list[dict[str, any]]):
+    def write_to_file_refs(self, content: list[dict[str, any]]):
         """Method to write the given content to the current logger"""
         with open(self.file_path.path, "a", encoding="utf-8") as log_file:
             log_file.write(f"\nLog for {self.parent_html_file}:\n")
@@ -179,15 +195,34 @@ class LogFile(File):
                 raise LogFileError(e)
             log_file.close()
 
+    def write_to_file_scripts(self, content: str):
+        """Method to write the given content to the current logger"""
+        with open(self.file_path.path, "a", encoding="utf-8") as log_file:
+            log_file.write(f"\t\tInformation about scripts for html file {self.parent_html_file}:\n")
+            try:
+                log_file.write(content)
+            except Exception as e:
+                raise LogFileError(e)
+            log_file.close()
 
-class Logger:
+
+class LoggerHTML:
 
     def __init__(self, file_path, parent_html_file: str, content_to_write: list[dict[str, any]]):
         self.log_file = LogFile(file_path, parent_html_file)
         self.content_to_write = content_to_write
 
     def output_to_logger_file(self):
-        self.log_file.write_to_file(self.content_to_write)
+        self.log_file.write_to_file_refs(self.content_to_write)
+
+
+class LoggerScripts:
+    def __init__(self, file_path, parent_html_file: str, content_to_write: str):
+        self.log_file = LogFile(file_path, parent_html_file)
+        self.content_to_write = content_to_write
+
+    def output_to_logger_file(self):
+        self.log_file.write_to_file_scripts(self.content_to_write)
 
 
 """

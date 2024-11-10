@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, Canvas
 from .files import HtmlFile
-
+from tkinter import font
 
 class Menu:
 
@@ -18,8 +18,15 @@ class Menu:
         self.write_to_logger_label = None
         self.write_to_logger_checkbox = None
         self.write_to_logger_checkbox_var = None
+
+        self.write_to_logger_scripts_label = None
+        self.write_to_logger_scripts_checkbox = None
+        self.write_to_logger_scripts_checkbox_var = None
+
         self.frame = None
         self.bg_img_reference = None
+
+        self.read_me_button = None
 
         self.decorate_menu()
 
@@ -58,6 +65,7 @@ class Menu:
         # Variable to hold checkbox state (0 for unchecked, 1 for checked)
         self.convert_checkbox_var = tk.IntVar()
         self.write_to_logger_checkbox_var = tk.IntVar()
+        self.write_to_logger_scripts_checkbox_var = tk.IntVar()
 
         # Creating the checkbox
         self.convert_checkbox = tk.Checkbutton(self.frame, text="Check", variable=self.convert_checkbox_var,
@@ -69,10 +77,38 @@ class Menu:
                                       bg='lightblue', font=("Arial", 11))
         self.write_to_logger_label.place(x=100, y=180)
 
+        # Creating the label for writing to logger the scrips
+        self.write_to_logger_scripts_label = tk.Label(self.frame, text="Write to logger information about scripts", anchor="w",
+                                      bg='lightblue', font=("Arial", 11))
+        self.write_to_logger_scripts_label.place(x=100, y=240)
+
         # Creating the checkbox for writing to logger
         self.write_to_logger_checkbox = tk.Checkbutton(self.frame, text="Check", variable=self.write_to_logger_checkbox_var,
                                                command=self.on_check_logger,  font=("Arial", 11), bg='lightblue')
-        self.write_to_logger_checkbox.place(x=340, y=180)
+        self.write_to_logger_checkbox.place(x=280, y=180)
+
+        # Creating the checkbox for writing to logger for scrips
+        self.write_to_logger_scripts_checkbox = tk.Checkbutton(self.frame, text="Check", variable=self.write_to_logger_scripts_checkbox_var,
+                                               command=self.on_check_logger_scripts,  font=("Arial", 11), bg='lightblue')
+        self.write_to_logger_scripts_checkbox.place(x=380, y=240)
+        button_font = font.Font(family="Helvetica", size=11, weight="bold")
+        stylish_button = tk.Button(
+            self.frame,
+            text="ReadMe!",
+            command=self.open_read_me,
+            font=button_font,
+            bg="#4CAF50",  # Button background color
+            fg="white",  # Text color
+            activebackground="#45a049",  # Background color when clicked
+            activeforeground="white",  # Text color when clicked
+            relief="raised",  # Raised appearance
+            bd=5,  # Border width
+            padx=10,  # Horizontal padding
+            pady=4  # Vertical padding
+        )
+
+        # Place the button in the window
+        stylish_button.place(x=180, y=290)
 
     # Method to open file dialog and get the file and format the html file
     def open_file(self, file_label: tk.Label) -> None:
@@ -81,8 +117,9 @@ class Menu:
 
             translate_to_rel = True if self.convert_checkbox_var.get() == 1 else False
             write_to_log = True if self.write_to_logger_checkbox_var.get() == 1 else False
+            write_to_log_script = True if self.write_to_logger_scripts_checkbox_var.get() == 1 else False
 
-            HtmlFile(file_path, translate_to_rel, write_to_log)
+            HtmlFile(file_path, translate_to_rel, write_to_log, write_to_log_script)
 
             # translate local references from absolute to relative path
             if translate_to_rel:
@@ -105,3 +142,35 @@ class Menu:
             messagebox.showinfo("Popup", "The logger will be written!")
         else:
             messagebox.showinfo("Popup", "The logger won't be written!")
+
+    # Method to check the state of the checkbox for scripts to be written to logger
+    def on_check_logger_scripts(self) -> None:
+        if self.write_to_logger_scripts_checkbox_var.get() == 1:
+            messagebox.showinfo("Popup", "The information about scripts will be written!")
+        else:
+            messagebox.showinfo("Popup", "The information about scripts will not be written!")
+
+    def open_read_me(self) -> None:
+        readMeObj = ReadMe()
+
+
+class ReadMe:
+
+    def __init__(self) -> None:
+        self.root = tk.Tk()
+        self.root.title("ReadMe")
+        self.root.geometry("518x200")
+        self.root.resizable(False, False)
+
+        self.decorate()
+
+    def decorate(self) -> None:
+        self.label0 = tk.Label(self.root, text="Select an html file to format it. The current functionalities are:\n"
+                                               "translating from absolute paths to relative paths\n"
+                                               "writing to logger all the hrefs from the all html tree (even its children)\n"
+                                               "writing to logger the scripts paths if they exist in the html tree (even its children)\n"
+                                               "the logger file has an default value which can be changed from settings file\n"
+                                                "first check the desired options and then select the specific html file\n"
+                                                "the formatting will happen right before after", anchor="w",
+                                              bg='lightblue', font=("Arial", 11))
+        self.label0.place(x=0, y=40)
