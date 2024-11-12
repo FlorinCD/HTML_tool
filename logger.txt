@@ -22,36 +22,7 @@ Log for C:/Users/Florin/Desktop/html_tool_test/html_container/file_2.html:
 Log for C:/Users/Florin/Desktop/html_tool_test/html_for_test.html:
 		Type: Inline Image, URL: ./inline_image.png, Absolute: False
 		Type: Inline Image, URL: https://www.w3schools.com/images/picture.jpg, Absolute: True
-		Type: CSS File, URL: ./style.css, Absolute: False
-		Type: CSS File, URL: https://example.com/external-style.css, Absolute: True
-		Type: Internal Link, URL: file_1.html, Absolute: False
-		Type: Internal Link, URL: html_container/file_2.html, Absolute: False
-		Type: External Link, URL: https://www.youtube.com/, Absolute: True
-		Type: External Link, URL: https://www.artificialintelligence-news.com/, Absolute: True
-		Information about scripts for html file C:/Users/Florin/Desktop/html_tool_test/html_for_test.html:
-		('src="https://externalsite.com/external_script.js"', '', 'https://externalsite.com/external_script.js')
-
-Log for C:/Users/Florin/Desktop/html_tool_test/file_1.html:
-		Information about scripts for html file C:/Users/Florin/Desktop/html_tool_test/file_1.html:
-
-Log for C:/Users/Florin/Desktop/html_tool_test/html_container/./new_dead_html_file.html:
-		Type: Dead end, URL: None, Absolute: Unkown
-		Information about scripts for html file C:/Users/Florin/Desktop/html_tool_test/html_container/./new_dead_html_file.html:
-
-Log for C:/Users/Florin/Desktop/html_tool_test/html_container/sub_html_container/file_3.html:
-		Type: Internal Link, URL: #, Absolute: False
-		Information about scripts for html file C:/Users/Florin/Desktop/html_tool_test/html_container/sub_html_container/file_3.html:
-
-Log for C:/Users/Florin/Desktop/html_tool_test/html_container/file_2.html:
-		Type: Internal Link, URL: #, Absolute: False
-		Type: Internal Link, URL: ./new_dead_html_file.html, Absolute: False
-		Type: Internal Link, URL: sub_html_container\file_3.html, Absolute: False
-		Information about scripts for html file C:/Users/Florin/Desktop/html_tool_test/html_container/file_2.html:
-
-Log for C:/Users/Florin/Desktop/html_tool_test/html_for_test.html:
-		Type: Inline Image, URL: ./inline_image.png, Absolute: False
-		Type: Inline Image, URL: https://www.w3schools.com/images/picture.jpg, Absolute: True
-		Type: CSS File, URL: ./style.css, Absolute: False
+		Type: CSS File, URL: style.css, Absolute: False
 		Type: CSS File, URL: https://example.com/external-style.css, Absolute: True
 		Type: Internal Link, URL: file_1.html, Absolute: False
 		Type: Internal Link, URL: html_container/file_2.html, Absolute: False

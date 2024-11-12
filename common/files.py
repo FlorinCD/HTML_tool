@@ -62,6 +62,7 @@ class HtmlFile(File):
 
             # Modify all <a> tags with local href attributes and that absolute path
             for a_tag in soup.find_all('a', href=True):
+                print(a_tag)
                 if Path.is_local_reference(a_tag['href']) and os.path.isabs(a_tag['href']):
                     # Replace the old local part with the new one
                     a_tag['href'] = Path(a_tag['href']).relative_path(self.file_path.dirname())
@@ -71,6 +72,12 @@ class HtmlFile(File):
                 if Path.is_local_reference(img_tag['src']) and os.path.isabs(img_tag['src']):
                     # Replace the old local part with the new one
                     img_tag['src'] = Path(img_tag['src']).relative_path(self.file_path.dirname())
+
+            # Modify all <link> tags with local src attributes and have absolute path
+            for link_tag in soup.find_all('link', href=True):
+                if Path.is_local_reference(link_tag['href']) and os.path.isabs(link_tag['href']):
+                    # Replace the old local part with the new one
+                    link_tag['href'] = Path(link_tag['href']).relative_path(self.file_path.dirname())
 
             # Write the modified content back to the file
             with open(self.file_path.path, 'w', encoding='utf-8') as file:
