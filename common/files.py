@@ -84,7 +84,7 @@ class HtmlFile(File):
                 file.write(str(soup))
 
         except Exception as e:
-            logging.error(f"Received: {e}", HTMLFormattingError)
+            logging.info(f"Received: {e}", HTMLFormattingError)
 
     @property
     def file_name(self) -> str:

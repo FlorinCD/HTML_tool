@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Test HTML File</title>
+<!-- CSS Stylesheet -->
+<link href="style.css" rel="stylesheet"/>
+<link href="https://example.com/external-style.css" rel="stylesheet"/>
+<style>
+        /* Inline CSS with background image */
+        header {
+            background-image: url('./local_image.png');
+            background-size: 100% 100%;
+            width: 700px;
+            height: 400px;
+        }
+        .external-background {
+            background-image: url('https://example.com/images/external-bg.jpg');
+        }
+    </style>
+</head>
+<body>
+<header></header>
+<h1>Test HTML for Local and External References</h1>
+<p>This is an example file containing both local and external links and images.</p>
+<p>It will also have some examples to test different scenarios</p>
+<h2>Links</h2>
+<!-- Local links -->
+<a href="file_1.html">Local Page 1</a><br/>
+<a href="html_container/file_2.html">Local Page 2</a><br/>
+<!-- External links -->
+<a href="https://www.youtube.com/">External Site Page 1</a><br/>
+<a href="https://www.artificialintelligence-news.com/">External Site Page 2</a><br/>
+<!-- Inline Image -->
+<img alt="Logo" src="./inline_image.png"/>
+<img alt="External Logo" src="https://www.w3schools.com/images/picture.jpg"/>
+<script src="https://externalsite.com/external_script.js"></script>
+</body>
+</html>
