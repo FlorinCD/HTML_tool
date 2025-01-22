@@ -3,7 +3,12 @@ from tkinter import filedialog, messagebox, Canvas
 from .files import HtmlFile
 from tkinter import font
 
+
 class Menu:
+    """
+    This class provides the interface wrapper of tkinter to display all the buttons and labels.
+    Created with the purpose to simply the need of control over the interface.
+    """
 
     def __init__(self) -> None:
         self.root = tk.Tk()
@@ -34,6 +39,9 @@ class Menu:
         self.root.mainloop()
 
     def decorate_menu(self) -> None:
+        """
+        Decorate all the window with the necessary elements (buttons, labels, frame).
+        """
         # Disable window resizing
         self.root.resizable(False, False)
 
@@ -110,8 +118,11 @@ class Menu:
         # Place the button in the window
         stylish_button.place(x=180, y=290)
 
-    # Method to open file dialog and get the file and format the html file
     def open_file(self, file_label: tk.Label) -> None:
+        """
+        This method is meant to open the file given by the user and perform the checked options from the
+        interface. Based on the actions some popup messages will appear.
+        """
         file_path = filedialog.askopenfilename(title="Select a file")
         if file_path:
 
@@ -129,32 +140,44 @@ class Menu:
             if write_to_log:
                 messagebox.showinfo("Popup", "The tool will write to the logger all the information!")
 
-    # Method to check the state of the checkbox for relative paths
     def on_check_abs_to_rel(self) -> None:
+        """
+        Method to check the state of the checkbox for relative paths
+        """
         if self.convert_checkbox_var.get() == 1:
             messagebox.showinfo("Popup", "The paths will be set to relative!")
         else:
             messagebox.showinfo("Popup", "The paths will remain unchanged!")
 
-    # Method to check the state of the checkbox for logger
     def on_check_logger(self) -> None:
+        """
+        Method to check the state of the checkbox for logger
+        """
         if self.write_to_logger_checkbox_var.get() == 1:
             messagebox.showinfo("Popup", "The logger will be written!")
         else:
             messagebox.showinfo("Popup", "The logger won't be written!")
 
-    # Method to check the state of the checkbox for scripts to be written to logger
     def on_check_logger_scripts(self) -> None:
+        """
+        Method to check the state of the checkbox for scripts to be written to logger
+        """
         if self.write_to_logger_scripts_checkbox_var.get() == 1:
             messagebox.showinfo("Popup", "The information about scripts will be written!")
         else:
             messagebox.showinfo("Popup", "The information about scripts will not be written!")
 
     def open_read_me(self) -> None:
+        """
+        Will open a new window to show some basic info about the application.
+        """
         readMeObj = ReadMe()
 
 
 class ReadMe:
+    """
+    This class is used to display the readme window where the user can read the needed information.
+    """
 
     def __init__(self) -> None:
         self.root = tk.Tk()
@@ -165,6 +188,9 @@ class ReadMe:
         self.decorate()
 
     def decorate(self) -> None:
+        """
+        Is meant to decorate the window with the necessary elements (buttons, labels, frames)
+        """
         self.label0 = tk.Label(self.root, text="Select an html file to format it. The current functionalities are:\n"
                                                "translating from absolute paths to relative paths\n"
                                                "writing to logger all the hrefs from the all html tree (even its children)\n"

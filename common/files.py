@@ -21,6 +21,9 @@ class File:
 
 
 class HtmlFile(File):
+    """
+    This class is created with the purpose to handle html file by refactoring refs, writing logs and others.
+    """
 
     HTML_FILES_ITERATED = set()
 
@@ -88,18 +91,20 @@ class HtmlFile(File):
 
     @property
     def file_name(self) -> str:
+        """Returns the file name"""
         return self.file_path.path.split('\\')[-1]
 
     # Function to add the references to the list
     def add_reference(self, ref_type, ref_value, is_absolute):
+        """Adds the given reference to the list"""
         self.references.append({
             "type": ref_type,
             "url": ref_value,
             "is_absolute": is_absolute
         })
 
-    # Get match for scripts and write them to logger
     def map_all_scripts(self) -> str:
+        """Get match for scripts and write them to logger"""
         html_content = self.read_file()
         if not html_content:
             return ""
@@ -112,8 +117,8 @@ class HtmlFile(File):
             return output_content
         return ""
 
-    # Iterate over the content and get all the references from the file
     def map_all_references(self) -> list[dict[str, any]]:
+        """Iterate over the content and get all the references from the file"""
         html_content = self.read_file()
         if not html_content:
             return [{'type': "Dead end", 'url': "None", 'is_absolute':"Unkown"}]
@@ -171,7 +176,9 @@ class HtmlFile(File):
 
 
 class LogFile(File):
-
+    """
+    This class is meant to create the log in which the information is stored
+    """
     def __init__(self, file_path: str, parent_html_file: str):
         super().__init__(file_path)
         self.parent_html_file = parent_html_file
@@ -214,7 +221,7 @@ class LogFile(File):
 
 
 class LoggerHTML:
-
+    """Logger for HTML"""
     def __init__(self, file_path, parent_html_file: str, content_to_write: list[dict[str, any]]):
         self.log_file = LogFile(file_path, parent_html_file)
         self.content_to_write = content_to_write
@@ -224,6 +231,7 @@ class LoggerHTML:
 
 
 class LoggerScripts:
+    """Logger for Scripts"""
     def __init__(self, file_path, parent_html_file: str, content_to_write: str):
         self.log_file = LogFile(file_path, parent_html_file)
         self.content_to_write = content_to_write

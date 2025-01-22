@@ -2,6 +2,7 @@ import os
 
 
 class Path:
+    """Path class to manage the given strings as system paths"""
 
     def __init__(self, path: str):
         self.path = path
